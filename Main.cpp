@@ -44,6 +44,12 @@ vector<vector<State>> ReadBoardFile(string path) //Function to Convert Vector fu
 
 }
 
+//Heuristic Function to calculate heuristic distance
+int Heuristic (int x1, int y1, int x2, int y2)
+{
+  return (abs(x2 - x1) + abs(y2 - y1));
+}
+
 
 //Search Function
 vector<vector<State>> Search (auto grid, int Start[2], int Goal[2])
