@@ -3,17 +3,20 @@
 #include <sstream>
 #include <string>
 #include <vector>
-using namespace std;
+using std::cout;
+using std::ifstream;
+using std::istringstream;
+using std::string;
+using std::vector;
+using std::abs;
 
-enum class State {kEmpty, kObstacle}; // Defining Enumerators
+enum class State {kEmpty, kObstacle, kClosed};
 
 
-// Function to generate vector of State from string (a line from 1.board file)
-vector<State> ParseLine(string line) //Assigning State into a String
-{ 
+vector<State> ParseLine(string line) {
     istringstream sline(line);
-    int n; //For numeric values
-    char c; //For ,
+    int n;
+    char c;
     vector<State> row;
     while (sline >> n >> c && c == ',') {
       if (n == 0) {
@@ -25,81 +28,72 @@ vector<State> ParseLine(string line) //Assigning State into a String
     return row;
 }
 
-//Function to generate a 2D vector of State from 1.board file using ParseLine Function
-vector<vector<State>> ReadBoardFile(string path) //Function to Convert Vector full of States
-{
-  ifstream fin;
-  fin.open(path);
-  vector<vector<State>> board{}; //Vector comprise of binary input from 1.board
-  if (myfile) //If such file exists then...
-  {
+
+vector<vector<State>> ReadBoardFile(string path) {
+  ifstream myfile (path);
+  vector<vector<State>> board{};
+  if (myfile) {
     string line;
-    while (getline(fin, line)) 
-    {
-      Board.push_back(ParseLine(Line));
+    while (getline(myfile, line)) {
+      vector<State> row = ParseLine(line);
+      board.push_back(row);
     }
   }
-  return board; //Returning a Vector consit of States
-  fin.close();
-
-}
-
-//Heuristic Function to calculate heuristic distance
-int Heuristic (int x1, int y1, int x2, int y2)
-{
-  return (abs(x2 - x1) + abs(y2 - y1));
+  return board;
 }
 
 
-//It will designated visited nodes with a State enumerator kClosed.
+// Calculate the manhattan distance
+int Heuristic(int x1, int y1, int x2, int y2) {
+  return abs(x2 - x1) + abs(y2 - y1);
+}
+
+// TODO: Write the AddToOpen function here.
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &OpenNodes, vector<vector<State>> &Grid)
 {
-  vector<int> node = {x, y, g, h};
+  OpenNodes.push_back(vector<int>{x, y, g, h});
   Grid[x][y] = State::kClosed;
 }
 
 
 
-//Search Function
-vector<vector<State>> Search (auto grid, int Start[2], int Goal[2])
-{
-  cout<<"No path found";
-  return vector<vector<State>> {};
-  
-}
+/** 
+ * Implementation of A* search algorithm
+ */
+vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2]) {
 
-//Function to return image of obstacle on the basis of state vector
-string CellString(State Cell)  
-{
-  if(Cell == State::kObstacle)
-    return"⛰️ ";
-  else
-    return "0 "; 
+
+  cout << "No path found!" << "\n";
+  return std::vector<vector<State>> {};
 }
 
 
-void PrintBoard(const vector<vector<State>> Board)
-{
-
-  for(auto I : Board){ //OR for(vector<State> I : Board)
-    for(auto J : I)  //OR for(State J : I)
-      cout<<CellString(J);
-    cout<<"\n";
+string CellString(State cell) {
+  switch(cell) {
+    case State::kObstacle: return "⛰️   ";
+    default: return "0   "; 
   }
 }
 
 
+void PrintBoard(const vector<vector<State>> board) {
+  for (int i = 0; i < board.size(); i++) {
+    for (int j = 0; j < board[i].size(); j++) {
+      cout << CellString(board[i][j]);
+    }
+    cout << "\n";
+  }
+}
 
-#include "test.cpp" //for testing solution
-
-
+#include "test.cpp"
 
 int main() {
-  // TODO: Declare "init" and "goal" arrays with values {0, 0} and {4, 5} respectively.
-  int init[] = {0,0};
-  int goal[] = {4,5};
+  int init[2]{0, 0};
+  int goal[2]{4, 5};
   auto board = ReadBoardFile("1.board");
   auto solution = Search(board, init, goal);
   PrintBoard(solution);
+  // Tests
   TestHeuristic();
+  TestAddToOpen();
 }
