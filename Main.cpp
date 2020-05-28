@@ -81,13 +81,16 @@ void PrintBoard(const vector<vector<State>> Board)
 
 
 
+#include "test.cpp" //for testing solution
+
+
+
 int main() {
   // TODO: Declare "init" and "goal" arrays with values {0, 0} and {4, 5} respectively.
   int init[] = {0,0};
   int goal[] = {4,5};
   auto board = ReadBoardFile("1.board");
   auto solution = Search(board, init, goal);
-  // TODO: Call Search with "board", "init", and "goal". Store the results in the variable "solution".
-  // TODO: Change the following line to pass "solution" to PrintBoard.
   PrintBoard(solution);
+  TestHeuristic();
 }
