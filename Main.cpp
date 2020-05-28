@@ -51,6 +51,15 @@ int Heuristic (int x1, int y1, int x2, int y2)
 }
 
 
+//It will designated visited nodes with a State enumerator kClosed.
+void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &OpenNodes, vector<vector<State>> &Grid)
+{
+  vector<int> node = {x, y, g, h};
+  Grid[x][y] = State::kClosed;
+}
+
+
+
 //Search Function
 vector<vector<State>> Search (auto grid, int Start[2], int Goal[2])
 {
