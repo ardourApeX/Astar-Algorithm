@@ -43,6 +43,25 @@ vector<vector<State>> ReadBoardFile(string path) {
 }
 
 
+// function to compare two node values
+bool Compare(vector<int> node1, vector<int> node2)
+{ 
+  // node1 and 2 are comprise of {x, y, g, h}
+  // so in order to calculate fValue all you need to apply indexing
+  
+  int f1, f2;
+  f1 = node1[2] + node1[3]; //Accessing g and h value of node1
+  f2 = node2[2] + node2[3]; //Accessing g and h value of node2
+//f  = g        + h
+  if(f1 > f2)
+    return true;
+  else
+    return false;
+}
+
+
+
+
 // Calculate the manhattan distance
 int Heuristic(int x1, int y1, int x2, int y2) {
   return abs(x2 - x1) + abs(y2 - y1);
@@ -56,10 +75,6 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &OpenNodes, vecto
 }
 
 
-
-/** 
- * Implementation of A* search algorithm
- */
 vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2]) 
 {
 
