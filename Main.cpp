@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include<algorithm>
 using namespace std;
 
 
@@ -154,6 +155,31 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &OpenNodes, vecto
 
 
 
+void ExpandNeighbors( const vector<int> &current, int goal[2], vector<vector<int>> &open, vector<vector<State>> &grid )
+{
+  x_current = current[0];
+  y_current = current[1];
+  g_current = current[2];
+  //No need of h value because it is different for every node
+  //As there are 4 possibilites
+  for(int i = 0; i < 4; i++)
+  {
+    int x_new = x_current + delta[i][0];
+    int y_new = y_current + delta[i][1];
+    if(CheckValidCell(x_new, y_new, grid))
+    {
+      int g_new = g_current + 1;
+      int h_new = Heuristic(x_new, y_new, goal[0], goal[1]);
+      AddToOpen(x_new, y_new, g_new, h_new, open, grid);
+
+    }
+  } 
+}
+
+
+
+
+
 // function to compare two node values
 bool Compare(vector<int> node1, vector<int> node2)
 { 
@@ -191,6 +217,11 @@ int main() {
   auto solution = Search(board, init, goal);
   PrintBoard(solution);
   // Tests
+
   TestHeuristic();
   TestAddToOpen();
+  TestCompare();
+  TestSearch();
+  TestCheckValidCell();
+  TestExpandNeighbors();
 }
