@@ -15,7 +15,7 @@ enum class State {kEmpty, //When there is a 0 in 1.board file. It denotes path i
                   kPath}; //When the node is considered as a path
 
 
-
+const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 //ReadBoradFile Function
 //It will take data from board file and generate a 2D vector comprise of States
 vector<vector<State>> ReadBoardFile(string path) //Path of 1.board file
