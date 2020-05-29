@@ -12,8 +12,9 @@ using namespace std;
 enum class State {kEmpty, //When there is a 0 in 1.board file. It denotes path is cleared.
                   kObstacle, //When there is a 1 in 1.board file. It denotes Obstacle.
                   kClosed, // When the node is visited. Its state from whatever gets changed to kClosed. 
-                  kPath}; //When the node is considered as a path
-
+                  kPath, //When the node is considered as a path
+                  kStart, //For Starting Point
+                  kFinish}; //For Goal Point
 
 const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 //ReadBoradFile Function
@@ -84,6 +85,8 @@ string CellString(State cell)
   {
     case State::kObstacle: return "⛰️   ";
     case State::kPath: return "🚗   ";
+    case State::kStart: return  "🚦   ";
+    case State::kFinish: return "🏁  ";
     default: return "0   "; 
   }
 }
@@ -115,8 +118,15 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
     grid[x][y] = State::kPath; //Changing state of the node which has been chosen as a Path
     if(x == goal[0] && y == goal[1])
     {
-      return grid; //If reached to the goal then the current grid is the final grid and return it back 
+       // Check if we're done.
+      grid[init[0]][init[1]] = State::kStart;
+      grid[goal[0]][goal[1]] = State::kFinish;
+      return grid;
     }
+
+
+    // If we're not done, expand search to current node's neighbors.
+    ExpandNeighbors(current, goal, open, grid);
   }
   cout << "No path found!" << "\n";
   return std::vector<vector<State>> {};
