@@ -131,6 +131,20 @@ int Heuristic(int x1, int y1, int x2, int y2) {
 
 
 
+//CheckValidCell Function
+//Check whether the cell is empty or not for further visit
+bool CheckValidCell(int x, int y, vector<vector<State>> grid)
+{
+  if((x >= 0 && x < grid.size()) && (y >=0 && y < grid[0].size())) //checking whether x,y belongs to grid size or not
+     {
+       if(grid[x][y] == State::kEmpty) //If belongs then check whether it is empty or not
+         return true;
+       else
+         return false;
+     }  
+}
+
+
 // TODO: Write the AddToOpen function here.
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &OpenNodes, vector<vector<State>> &Grid)
 {
